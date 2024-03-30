@@ -38,6 +38,12 @@
     public const ulong RAM_READ_BUS_A = 1 << 12;
     public const ulong RAM_READ_BUS_B = 1 << 13;
 
+    public const ulong IO_WRITE_BUS_A = 1 << 14;
+    public const ulong IO_WRITE_BUS_B = 1 << 15;
+
+    public const ulong IO_READ_BUS_A = 1 << 16;
+    public const ulong IO_READ_BUS_B = 1 << 17;
+
     public static void Main(string[] args)
     {
         Console.WriteLine(DONE);
@@ -73,10 +79,6 @@
             PUT_VAL_IOP0_BUS | STR_REG_2_BUS,
             PUT_VAL_IOP1_BUS | STR_REG_3_BUS
         }));
-
-
-
-
         #endregion
 
 
@@ -108,9 +110,37 @@
         {
             PUT_REG_IOP0_HI_BUS | RAM_WRITE_BUS_B
         }));
+        #endregion
 
 
+        #region > IO (0010.XXXX)
+        //> IOREADA
+        //  0010.0000 REG1.0000 0000.0000 (IO[REGA] -> REG1)
+        instructions.Add(new Instruction("IOREADA", 0b0010_0000, new List<ulong>
+        {
+            STR_REG_IOP0_HI_BUS | IO_READ_BUS_A
+        }));
 
+        //> IOREADB
+        //  0010.0001 REG1.0000 0000.0000 (IO[REGB] -> REG1)
+        instructions.Add(new Instruction("IOREADB", 0b0010_0001, new List<ulong>
+        {
+            STR_REG_IOP0_HI_BUS | IO_READ_BUS_B
+        }));
+
+        //> IOWRITEA
+        //  0010.0010 REG1.0000 0000.0000 (REG1 -> IO[REGA])
+        instructions.Add(new Instruction("IOWRITEA", 0b0010_0010, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | IO_WRITE_BUS_A
+        }));
+
+        //> IOWRITEB
+        //  0010.0011 REG1.0000 0000.0000 (REG1 -> IO[REGB])
+        instructions.Add(new Instruction("IOWRITEB", 0b0010_0011, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | IO_WRITE_BUS_B
+        }));
         #endregion
 
 
