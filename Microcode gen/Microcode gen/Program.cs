@@ -58,6 +58,11 @@
     public const ulong ALU_FLAG_RESET = 1 << 28;
     public const ulong PUT_ALU_RES_BUS = 1 << 29;
 
+    public const ulong JEQ = (ulong)1 << 30;
+    public const ulong JNEQ = (ulong)1 << 31;
+    public const ulong HLT = (ulong)1 << 32;
+    public const ulong JMP = (ulong)1 << 33;
+
     public static void Main(string[] args)
     {
         Console.WriteLine(DONE);
@@ -102,7 +107,6 @@
         }));
         #endregion
 
-
         #region > MEMORY MANIPULATION (0001.XXXX)
         //> READA
         //  0001.0000 REG1.0000 0000.0000 (RAM[REGA] -> REG1)
@@ -132,7 +136,6 @@
             PUT_REG_IOP0_HI_BUS | RAM_WRITE_BUS_B
         }));
         #endregion
-
 
         #region > IO (0010.XXXX)
         //> IOREADA
@@ -306,13 +309,34 @@
         #endregion
 
         #region > CONTROL FLOW (0100.XXXX)
+        //> JEQ
+        //  0100.0000 AAAA.AAAA AAAA.AAAA
+        instructions.Add(new Instruction("JEQ", 0b0100_0000, new List<ulong>
+        {
+            JEQ
+        }));
 
+        //> JNEQ
+        //  0100.0001 AAAA.AAAA AAAA.AAAA
+        instructions.Add(new Instruction("JNEQ", 0b0100_0001, new List<ulong>
+        {
+            JNEQ
+        }));
 
-
+        //> JMP
+        //  0100.0010 AAAA.AAAA AAAA.AAAA
+        instructions.Add(new Instruction("JMP", 0b0100_0010, new List<ulong>
+        {
+            JMP
+        }));
         #endregion
 
-
-
+        //> HLT
+        //  0100.0011 0000.0000 0000.0000
+        instructions.Add(new Instruction("HLT", 0b0100_0011, new List<ulong>
+        {
+            HLT
+        }));
 
         // List Instructions
         Console.WriteLine("Instructions: ");
@@ -478,6 +502,8 @@ INSTRUCT  OP___HIGH OP____LOW
    0100.0000 AAAA.AAAA AAAA.AAAA
  > JNEQ
    0100.0001 AAAA.AAAA AAAA.AAAA
+ > JMP
+   0100.0010 AAAA.AAAA AAAA.AAAA
  > HLT
-   0100.0010 0000.0000 0000.0000 
+   0100.0011 0000.0000 0000.0000
 */
