@@ -4636,16 +4636,16 @@
     <comp lib="8" loc="(1745,2155)" name="Text">
       <a name="text" val="DATA BUS"/>
     </comp>
-    <comp lib="8" loc="(1772,844)" name="Text">
+    <comp lib="8" loc="(1770,840)" name="Text">
       <a name="text" val="ALU REG 0"/>
     </comp>
-    <comp lib="8" loc="(1882,844)" name="Text">
+    <comp lib="8" loc="(1880,840)" name="Text">
       <a name="text" val="ALU REG 1"/>
     </comp>
     <comp lib="8" loc="(2025,2165)" name="Text">
       <a name="text" val="RAM IN"/>
     </comp>
-    <comp lib="8" loc="(2029,846)" name="Text">
+    <comp lib="8" loc="(2025,845)" name="Text">
       <a name="text" val="ALU OUT"/>
     </comp>
     <comp lib="8" loc="(2035,2365)" name="Text">
@@ -4657,7 +4657,7 @@
     <comp lib="8" loc="(2370,500)" name="Text">
       <a name="text" val="RAM"/>
     </comp>
-    <comp lib="8" loc="(2536,2268)" name="Text">
+    <comp lib="8" loc="(2535,2265)" name="Text">
       <a name="text" val="CONTROL FLOW"/>
     </comp>
     <comp lib="8" loc="(265,4305)" name="Text">
@@ -4675,16 +4675,16 @@
     <comp lib="8" loc="(325,895)" name="Text">
       <a name="text" val="MICROCODE ROM"/>
     </comp>
-    <comp lib="8" loc="(3323,1581)" name="Text">
-      <a name="text" val="ALU FLAG OV"/>
-    </comp>
-    <comp lib="8" loc="(3324,1383)" name="Text">
+    <comp lib="8" loc="(3320,1380)" name="Text">
       <a name="text" val="ALU FLAGS"/>
     </comp>
-    <comp lib="8" loc="(3353,1876)" name="Text">
+    <comp lib="8" loc="(3320,1580)" name="Text">
+      <a name="text" val="ALU FLAG OV"/>
+    </comp>
+    <comp lib="8" loc="(3350,1875)" name="Text">
       <a name="text" val="ALU FLAG HLT"/>
     </comp>
-    <comp lib="8" loc="(3357,1719)" name="Text">
+    <comp lib="8" loc="(3355,1715)" name="Text">
       <a name="text" val="ALU FLAG EQ"/>
     </comp>
     <comp lib="8" loc="(3395,490)" name="Text">
