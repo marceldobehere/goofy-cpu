@@ -56,6 +56,7 @@
     public const ulong ALU_NOT = 1 << 26;
     public const ulong ALU_CMP = 1 << 27;
     public const ulong ALU_FLAG_RESET = 1 << 28;
+    public const ulong PUT_ALU_RES_BUS = 1 << 29;
 
     public static void Main(string[] args)
     {
@@ -162,6 +163,154 @@
             PUT_REG_IOP0_HI_BUS | IO_WRITE_BUS_B
         }));
         #endregion
+
+        #region > MATH (0011.XXXX)
+        //> ADD
+        //  0011.0000 REG1.REG2 0000.0000 (REG1 + REG2) -> REG1, FLAG(OVERFLOW)
+        instructions.Add(new Instruction("ADD", 0b0011_0000, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_ADD | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> ADDOV
+        //  0011.0001 REG1.REG2 0000.0000 (REG1 + REG2) -> REG1 (+1 IF FLAG(OVERFLOW))
+        instructions.Add(new Instruction("ADDOV", 0b0011_0001, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_ADD_OV | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> SUB
+        //  0011.0010 REG1.REG2 0000.0000 (REG1 - REG2) -> REG1
+        instructions.Add(new Instruction("SUB", 0b0011_0010, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_SUB | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> SUBOV
+        //  0011.0011 REG1.REG2 0000.0000 (REG1 - REG2) -> REG1
+        instructions.Add(new Instruction("SUBOV", 0b0011_0011, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_SUB_OV | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> AND
+        //  0011.0100 REG1.REG2 0000.0000 (REG1 & REG2) -> REG1
+        instructions.Add(new Instruction("AND", 0b0011_0100, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_AND | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> OR
+        //  0011.0101 REG1.REG2 0000.0000 (REG1 | REG2) -> REG1
+        instructions.Add(new Instruction("OR", 0b0011_0101, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_OR | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> NOT
+        //  0011.0110 REG1.REG2 0000.0000 (   ~REG2   ) -> REG1
+        instructions.Add(new Instruction("NOT", 0b0011_0110, new List<ulong>
+        {
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_NOT | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> CMP
+        //  0011.0111 REG1.REG2 0000.0000 (REG1 ? REG2) -> FLAG(EQ)
+        instructions.Add(new Instruction("CMP", 0b0011_0111, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_REG_IOP0_LO_BUS | STR_ALU_REG_1_BUS,
+            ALU_CMP
+        }));
+
+        //> ADDI
+        //  0011.1000 REG1.0000 AAAA.AAAA (REG1 + AAAA) -> REG1
+        instructions.Add(new Instruction("ADDI", 0b0011_1000, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_ADD | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> ADDIOV
+        //  0011.1001 REG1.0000 AAAA.AAAA (REG1 + AAAA) -> REG1, FLAG(OVERFLOW)
+        instructions.Add(new Instruction("ADDIOV", 0b0011_1001, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_ADD_OV | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> SUBI
+        //  0011.1010 REG1.0000 AAAA.AAAA (REG1 - AAAA) -> REG1
+        instructions.Add(new Instruction("SUBI", 0b0011_1010, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_SUB | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> SUBIOV
+        //  0011.1011 REG1.0000 AAAA.AAAA (REG1 - AAAA) -> REG1
+        instructions.Add(new Instruction("SUBIOV", 0b0011_1011, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_SUB_OV | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> ANDI
+        //  0011.1100 REG1.0000 AAAA.AAAA (REG1 & AAAA) -> REG1
+        instructions.Add(new Instruction("ANDI", 0b0011_1100, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_AND | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> ORI
+        //  0011.1101 REG1.0000 AAAA.AAAA (REG1 | AAAA) -> REG1
+        instructions.Add(new Instruction("ORI", 0b0011_1101, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_OR | PUT_ALU_RES_BUS | STR_REG_IOP0_HI_BUS
+        }));
+
+        //> NOTI
+        //  ????.???? ????.???? ????.???? (???????????) -> ????
+        
+
+        //> CMPI
+        //  0011.1111 REG1.0000 AAAA.AAAA (REG1 ? AAAA) -> FLAG(EQ)
+        instructions.Add(new Instruction("CMPI", 0b0011_1111, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | STR_ALU_REG_0_BUS,
+            PUT_VAL_IOP1_BUS | STR_ALU_REG_1_BUS,
+            ALU_CMP
+        }));
+
+        #endregion
+
+        #region > CONTROL FLOW (0100.XXXX)
+
+
+
+        #endregion
+
 
 
 
