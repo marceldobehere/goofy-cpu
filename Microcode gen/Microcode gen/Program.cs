@@ -32,6 +32,12 @@
     public const ulong STR_REG_2_BUS = 1 << 8;
     public const ulong STR_REG_3_BUS = 1 << 9;
 
+    public const ulong RAM_WRITE_BUS_A = 1 << 10;
+    public const ulong RAM_WRITE_BUS_B = 1 << 11;
+
+    public const ulong RAM_READ_BUS_A = 1 << 12;
+    public const ulong RAM_READ_BUS_B = 1 << 13;
+
     public static void Main(string[] args)
     {
         Console.WriteLine(DONE);
@@ -39,7 +45,6 @@
 
 
         #region > REGISTER MANIPULATION (0000.XXXX)
-
         //> MOVE
         //  0000.0000 REG1.REG2 0000.0000 (REG2 -> REG1)
         // REG1 IS HI, REG2 IS LO
@@ -75,6 +80,39 @@
         #endregion
 
 
+        #region > MEMORY MANIPULATION (0001.XXXX)
+        //> READA
+        //  0001.0000 REG1.0000 0000.0000 (RAM[REGA] -> REG1)
+        instructions.Add(new Instruction("READA", 0b0001_0000, new List<ulong>
+        {
+            STR_REG_IOP0_HI_BUS | RAM_READ_BUS_A
+        }));
+
+        //> READB
+        //  0001.0001 REG1.0000 0000.0000 (RAM[REGB] -> REG1)
+        instructions.Add(new Instruction("READB", 0b0001_0001, new List<ulong>
+        {
+            STR_REG_IOP0_HI_BUS | RAM_READ_BUS_B
+        }));
+
+        //> WRITEA
+        //  0001.0010 REG1.0000 0000.0000 (REG1 -> RAM[REGA])
+        instructions.Add(new Instruction("WRITEA", 0b0001_0010, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | RAM_WRITE_BUS_A
+        }));
+
+        //> WRITEB
+        //  0001.0011 REG1.0000 0000.0000 (REG1 -> RAM[REGB])
+        instructions.Add(new Instruction("WRITEB", 0b0001_0011, new List<ulong>
+        {
+            PUT_REG_IOP0_HI_BUS | RAM_WRITE_BUS_B
+        }));
+
+
+
+        #endregion
+
 
 
         // List Instructions
@@ -98,6 +136,9 @@
         // LO 4 BITS ARE THE STEP INDEX
         // PER ADRESS IT STORES A 32 BIT "STEP" VALUE
         ulong[,] data = new ulong[256, 16];
+        for (int i = 0; i < 256; i++)
+            data[i, 0] = DONE;
+
         foreach (var inst in instructions)
         {
             if (inst.Steps.Count > 16)
