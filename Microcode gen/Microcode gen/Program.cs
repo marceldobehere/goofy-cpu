@@ -44,6 +44,19 @@
     public const ulong IO_READ_BUS_A = 1 << 16;
     public const ulong IO_READ_BUS_B = 1 << 17;
 
+    public const ulong STR_ALU_REG_0_BUS = 1 << 18;
+    public const ulong STR_ALU_REG_1_BUS = 1 << 19;
+
+    public const ulong ALU_ADD = 1 << 20;
+    public const ulong ALU_ADD_OV = 1 << 21;
+    public const ulong ALU_SUB = 1 << 22;
+    public const ulong ALU_SUB_OV = 1 << 23;
+    public const ulong ALU_AND = 1 << 24;
+    public const ulong ALU_OR = 1 << 25;
+    public const ulong ALU_NOT = 1 << 26;
+    public const ulong ALU_CMP = 1 << 27;
+    public const ulong ALU_FLAG_RESET = 1 << 28;
+
     public static void Main(string[] args)
     {
         Console.WriteLine(DONE);
@@ -78,6 +91,13 @@
         {
             PUT_VAL_IOP0_BUS | STR_REG_2_BUS,
             PUT_VAL_IOP1_BUS | STR_REG_3_BUS
+        }));
+
+        //> RES FLAG
+        //  0000.0100 0000.0000 0000.0000 (0    -> FLAG)
+        instructions.Add(new Instruction("RES FLAG", 0b0000_0100, new List<ulong>
+        {
+            ALU_FLAG_RESET
         }));
         #endregion
 
