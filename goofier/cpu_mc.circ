@@ -2841,9 +2841,6 @@
     <comp lib="0" loc="(450,2800)" name="Pull Resistor">
       <a name="facing" val="east"/>
     </comp>
-    <comp lib="0" loc="(450,2800)" name="Tunnel">
-      <a name="label" val="MC_DONE"/>
-    </comp>
     <comp lib="0" loc="(450,910)" name="Pull Resistor">
       <a name="facing" val="east"/>
     </comp>
@@ -2861,13 +2858,6 @@
     </comp>
     <comp lib="0" loc="(450,970)" name="Tunnel">
       <a name="label" val="MC_STR_REG_IOP0_LO_BUS"/>
-    </comp>
-    <comp lib="0" loc="(460,660)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="label" val="MC_DONE"/>
-    </comp>
-    <comp lib="0" loc="(520,710)" name="Tunnel">
-      <a name="label" val="op_done"/>
     </comp>
     <comp lib="0" loc="(550,770)" name="Tunnel">
       <a name="label" val="op0"/>
@@ -3408,9 +3398,6 @@
     <comp lib="1" loc="(470,720)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
-    <comp lib="1" loc="(520,710)" name="AND Gate">
-      <a name="size" val="30"/>
-    </comp>
     <comp lib="1" loc="(650,470)" name="Controlled Buffer">
       <a name="width" val="8"/>
     </comp>
@@ -3816,7 +3803,7 @@
     <comp lib="8" loc="(720,430)" name="Text">
       <a name="text" val="TEST IO"/>
     </comp>
-    <comp lib="8" loc="(865,415)" name="Text">
+    <comp lib="8" loc="(964,415)" name="Text">
       <a name="text" val="IO"/>
     </comp>
     <wire from="(100,690)" to="(100,720)"/>
@@ -4361,12 +4348,8 @@
     <wire from="(4310,990)" to="(4310,1000)"/>
     <wire from="(440,730)" to="(440,740)"/>
     <wire from="(440,830)" to="(480,830)"/>
-    <wire from="(460,660)" to="(480,660)"/>
     <wire from="(470,720)" to="(480,720)"/>
-    <wire from="(480,660)" to="(480,700)"/>
-    <wire from="(480,700)" to="(490,700)"/>
     <wire from="(480,720)" to="(480,830)"/>
-    <wire from="(480,720)" to="(490,720)"/>
     <wire from="(510,770)" to="(510,820)"/>
     <wire from="(510,770)" to="(550,770)"/>
     <wire from="(520,800)" to="(520,820)"/>
