@@ -3,7 +3,7 @@ A custom 8 bit cpu I made in logisim evolution.
 
 It is still very WIP but currently its ALIVEEEEEEEE!
 
-I have also made a second, more silly version [here](/goofier/README.md)!
+I have also made a second, more silly version [here](/goofier/)!
 
 
 

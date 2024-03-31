@@ -1,5 +1,5 @@
 # Goofy CPU (GOOFIER EDITION)
-A sillier version of [my goofy cpu](../README.md) which runs microcode directly instead of instructions. 
+A sillier version of [my goofy cpu](../) which runs microcode directly instead of instructions. 
 
 This leads to a higher performance but also has way larger programs.
 
