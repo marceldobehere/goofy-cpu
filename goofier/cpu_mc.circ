@@ -55,7 +55,7 @@
     <a name="appearance" val="logisim_evolution"/>
     <a name="circuit" val="main"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
-    <a name="simulationFrequency" val="128.0"/>
+    <a name="simulationFrequency" val="2048000.0"/>
     <comp lib="0" loc="(100,340)" name="Pull Resistor">
       <a name="facing" val="east"/>
     </comp>
@@ -3448,7 +3448,7 @@
       <a name="addrWidth" val="16"/>
       <a name="appearance" val="logisim_evolution"/>
       <a name="contents">addr/data: 16 64
-1000000040002 1000000080020 1000020100008 20000000040002 20000000080020 20000008000000 80000000 100000000
+1000000040002 1000000080020 1000020100008 ff000000040002 ff000000080020 ff000008000000 80000000 100000000
 </a>
       <a name="dataWidth" val="64"/>
     </comp>
@@ -3756,10 +3756,10 @@
     <comp lib="5" loc="(980,500)" name="Hex Digit Display">
       <a name="labelvisible" val="true"/>
     </comp>
-    <comp lib="8" loc="(1026,782)" name="Text">
+    <comp lib="8" loc="(1025,780)" name="Text">
       <a name="text" val="INSTRUCTION COUNTER"/>
     </comp>
-    <comp lib="8" loc="(1031,51)" name="Text">
+    <comp lib="8" loc="(1030,50)" name="Text">
       <a name="text" val="CLOCK + RESET"/>
     </comp>
     <comp lib="8" loc="(1315,405)" name="Text">
@@ -3780,7 +3780,7 @@
     <comp lib="8" loc="(1865,1655)" name="Text">
       <a name="text" val="CONTROL FLOW"/>
     </comp>
-    <comp lib="8" loc="(1962,458)" name="Text">
+    <comp lib="8" loc="(1960,455)" name="Text">
       <a name="text" val="ALU"/>
     </comp>
     <comp lib="8" loc="(2270,810)" name="Text">
@@ -3792,10 +3792,10 @@
     <comp lib="8" loc="(2305,945)" name="Text">
       <a name="text" val="ALU FLAG EQ"/>
     </comp>
-    <comp lib="8" loc="(2324,754)" name="Text">
+    <comp lib="8" loc="(2320,750)" name="Text">
       <a name="text" val="ALU FLAGS"/>
     </comp>
-    <comp lib="8" loc="(241,652)" name="Text">
+    <comp lib="8" loc="(240,650)" name="Text">
       <a name="text" val="MICROCODE ROM"/>
     </comp>
     <comp lib="8" loc="(300,90)" name="Text">
@@ -3813,10 +3813,10 @@
     <comp lib="8" loc="(4225,1100)" name="Text">
       <a name="text" val="REGISTER COMBINATORS"/>
     </comp>
-    <comp lib="8" loc="(721,431)" name="Text">
+    <comp lib="8" loc="(720,430)" name="Text">
       <a name="text" val="TEST IO"/>
     </comp>
-    <comp lib="8" loc="(867,417)" name="Text">
+    <comp lib="8" loc="(865,415)" name="Text">
       <a name="text" val="IO"/>
     </comp>
     <wire from="(100,690)" to="(100,720)"/>

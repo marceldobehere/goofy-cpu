@@ -472,7 +472,7 @@
 
         ins.Add(Instruction.Label("LOOP"));
         ins.Add(Instruction.RegIns(InsE.ADDI, 0, 1));
-        ins.Add(Instruction.RegIns(InsE.CMPI, 0, 0x20));
+        ins.Add(Instruction.RegIns(InsE.CMPI, 0, 0xFF));
         ins.Add(Instruction.OpIns(InsE.JNEQ, LabelAddr("LOOP", ins)));
         ins.Add(Instruction.EmptyIns(InsE.HLT));
 
