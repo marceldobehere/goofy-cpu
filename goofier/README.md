@@ -25,9 +25,6 @@ NOTE: You need to include the `common.asm` file for customasm to work properly!
 
 NOTE: This currently windows only (kinda?) due to the silly compile setup with the batch file.
 
-### IMPORTANT NOTE
-AAAAAA Currently JUMPS WILL JUMP TO THE WRONG ADDRESS (IN BOTH COMPILING DIRECTLY OR INDIRECTLY FROM A BIN)!!! (Will fix soon)
-
 ## Images/GIFs
 ![An image of the full cpu](./imgs/cpu.png)
 
