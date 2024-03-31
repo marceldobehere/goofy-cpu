@@ -329,7 +329,6 @@
         {
             JMP
         }));
-        #endregion
 
         //> HLT
         //  0100.0011 0000.0000 0000.0000
@@ -337,6 +336,7 @@
         {
             HLT
         }));
+        #endregion
 
         // List Instructions
         Console.WriteLine("Instructions: ");

@@ -108,7 +108,7 @@
 
         public override string ToString()
         {
-            return IsLabel ? $"[LABEL]: {Name}" : $"{Name} ({OP_HIGH:X2}.{OP_LOW:X2})";
+            return IsLabel ? $"[LABEL]: {LabelName}" : $"{Name} ({OP_HIGH:X2}.{OP_LOW:X2})";
         }
     }
 
@@ -449,7 +449,7 @@
         return instructionSet;
     }
 
-    public static ushort LabelAddr(string label, List<Instruction> instructions)
+    public static ushort LabelAddr(string label, List<InstructionDef> instructionSet, List<Instruction> instructions)
     {
         ushort addr = 0;
         for (int i = 0; i < instructions.Count; i++)
@@ -457,7 +457,8 @@
             Instruction inst = instructions[i];
             if (!inst.IsLabel)
             {
-                addr++;
+                InstructionDef def = instructionSet.Find(x => x.Name == inst.Name);
+                addr += (ushort)def.Steps.Count;
                 continue;
             }
             if (instructions[i].LabelName == label)
@@ -466,14 +467,15 @@
         throw new Exception($"Label {label} not found!");
     }
 
-    public static List<Instruction> AddProgram(bool print)
+    public static List<Instruction> AddProgram(List<InstructionDef> instructionSet, bool print)
     {
         List<Instruction> ins = new List<Instruction>();
 
+        ins.Add(Instruction.RegIns(InsE.MOVEI, 0, 0x20));
         ins.Add(Instruction.Label("LOOP"));
         ins.Add(Instruction.RegIns(InsE.ADDI, 0, 1));
         ins.Add(Instruction.RegIns(InsE.CMPI, 0, 0xFF));
-        ins.Add(Instruction.OpIns(InsE.JNEQ, LabelAddr("LOOP", ins)));
+        ins.Add(Instruction.OpIns(InsE.JNEQ, LabelAddr("LOOP", instructionSet, ins)));
         ins.Add(Instruction.EmptyIns(InsE.HLT));
 
 
@@ -535,9 +537,9 @@
 
     public static void Main(string[] args)
     {
-        List<InstructionDef> instructionSet = InitInstructionSet(true);
+        List<InstructionDef> instructionSet = InitInstructionSet(false);
 
-        List<Instruction> instructions = AddProgram(true);
+        List<Instruction> instructions = AddProgram(instructionSet, true);
 
         List<ulong> result = CompileInstructions(instructions, instructionSet, true);
 
