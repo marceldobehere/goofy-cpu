@@ -449,46 +449,6 @@
         return instructionSet;
     }
 
-    public static ushort LabelAddr(string label, List<Instruction> instructions)
-    {
-        ushort addr = 0;
-        for (int i = 0; i < instructions.Count; i++)
-        {
-            Instruction inst = instructions[i];
-            if (!inst.IsLabel)
-            {
-                addr++;
-                continue;
-            }
-            if (instructions[i].LabelName == label)
-                return addr;
-        }
-        throw new Exception($"Label {label} not found!");
-    }
-
-    public static List<Instruction> AddProgram(bool print)
-    {
-        List<Instruction> ins = new List<Instruction>();
-
-        ins.Add(Instruction.Label("LOOP"));
-        ins.Add(Instruction.RegIns(InsE.ADDI, 0, 1));
-        ins.Add(Instruction.RegIns(InsE.CMPI, 0, 0xFF));
-        ins.Add(Instruction.OpIns(InsE.JNEQ, LabelAddr("LOOP", ins)));
-        ins.Add(Instruction.EmptyIns(InsE.HLT));
-
-
-        // Print Program
-        if (print)
-        {
-            Console.WriteLine("Program: ");
-            foreach (var inst in ins)
-                Console.WriteLine($" > {inst.ToString()}");
-            Console.WriteLine();
-        }
-
-        return ins;
-    }
-
     public static ulong MixStepAndOperands(ulong step, byte opHi, byte opLo)
     {
         // ABXXXXXX
@@ -533,12 +493,92 @@
         return result;
     }
 
-    public static List<Instruction> LoadProgram(string path, List<InstructionDef> instructionSet, bool print)
+    public struct PartProgram
+    {
+        public struct PatchEntry
+        {
+            public int srcInstIndex;
+            public ushort srcAddr;
+
+            public PatchEntry(int srcInstIndex, ushort srcAddr)
+            {
+                this.srcInstIndex = srcInstIndex;
+                this.srcAddr = srcAddr;
+            }
+        }
+
+        public List<InstructionDef> instructionSet;
+        public List<Instruction> instructions;
+        public List<PatchEntry> patches;
+
+        public PartProgram(List<InstructionDef> instructionSet)
+        {
+            this.instructionSet = instructionSet;
+            instructions = new List<Instruction>();
+            patches = new List<PatchEntry>();
+        }
+    }
+
+    public static List<Instruction> LoadAndPatchProgram(string path, List<InstructionDef> instructionSet, bool print)
+    {
+        PartProgram prg = LoadProgram(path, instructionSet, print);
+        return PatchProgram(prg, print);
+    }
+
+    public static List<Instruction> PatchProgram(PartProgram prg, bool print)
+    {
+        if (print)
+            Console.WriteLine($"> Patching program");
+
+        List<Instruction> res = prg.instructions;
+
+        foreach (PartProgram.PatchEntry patch in prg.patches)
+        {
+            Instruction inst = res[patch.srcInstIndex];
+            int endInstIndex = (int)patch.srcAddr / 3;
+
+            ushort addr = 0;
+            for (int i = 0; i < endInstIndex; i++)
+            {
+                Instruction inst2 = res[i];
+                if (inst2.IsLabel)
+                    continue;
+                InstructionDef def = prg.instructionSet.Find(x => x.Name == inst2.Name);
+                addr += (ushort)def.Steps.Count;
+            }
+
+            switch (inst.Name)
+            {
+                case InsE.JMP:
+                    res[patch.srcInstIndex] = Instruction.OpIns(InsE.JMP, addr);
+                    break;
+                case InsE.JEQ:
+                    res[patch.srcInstIndex] = Instruction.OpIns(InsE.JEQ, addr);
+                    break;
+                case InsE.JNEQ:
+                    res[patch.srcInstIndex] = Instruction.OpIns(InsE.JNEQ, addr);
+                    break;
+            }
+
+            if (print)
+                Console.WriteLine($" > Patching {inst} -> {res[patch.srcInstIndex]} (ADDR: {Convert.ToString(endInstIndex, 16).PadLeft(4, '0')} -> {Convert.ToString(addr, 16).PadLeft(4, '0')})");
+        }
+
+
+
+        if (print)
+            Console.WriteLine();
+        return res;
+    }
+
+    public static PartProgram LoadProgram(string path, List<InstructionDef> instructionSet, bool print)
     {
         if (print)
             Console.WriteLine($"> Loading file \"{path}\"");
 
-        List<Instruction> instructions = new List<Instruction>();
+        PartProgram prg = new PartProgram(instructionSet);
+        List<Instruction> instructions = prg.instructions;
+        List<PartProgram.PatchEntry> patches = prg.patches;
 
         try
         {
@@ -554,7 +594,13 @@
                     Instruction inst = new Instruction(name, opHi, opLo);
                     instructions.Add(inst);
 
-                    if (print)
+                    if (name == InsE.JMP || name == InsE.JEQ || name == InsE.JNEQ)
+                    {
+                        patches.Add(new PartProgram.PatchEntry(instructions.Count - 1, (ushort)((opHi << 8) | opLo)));
+                        if (print)
+                            Console.WriteLine($" > {inst} -> NEEDS TO BE PATCHED!");
+                    }
+                    else if (print)
                         Console.WriteLine($" > {inst}");
 
                 }
@@ -570,7 +616,7 @@
         if (print)
             Console.WriteLine();
 
-        return instructions;
+        return prg;
     }
 
     public static void Main(string[] args)
@@ -590,7 +636,7 @@
 
         List<InstructionDef> instructionSet = InitInstructionSet(false);
 
-        List<Instruction> instructions = LoadProgram(path, instructionSet, true);
+        List<Instruction> instructions = LoadAndPatchProgram(path, instructionSet, true);
 
         List<ulong> result = CompileInstructions(instructions, instructionSet, true);
 
