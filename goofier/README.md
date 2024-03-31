@@ -14,9 +14,16 @@ The cpu executes microcode directly which is generated using a c# project that t
 
 This program can be found in the `Goofy Microcode gen` folder.
 
+There is also the compiler from binary asm to microcode, which can be found in `Goofy Microcode comp`.
+
 ## Developing
 
-Currently you have to edit the Microcode generator program with your assembly and then load in the microcode into the rom in logisim.
+You can now write assembly and compile it for the cpu. The stuff can be found in the `asm` folder. 
+You can compile an asm file (like `examples/inc_hlt.asm`) using the `compile.bat` file and then use the generated output and load that into the microcode rom.
+
+NOTE: You need to include the `common.asm` file for customasm to work properly!
+
+NOTE: This currently windows only (kinda?) due to the silly compile setup with the batch file.
 
 ## Images/GIFs
 ![An image of the full cpu](./imgs/cpu.png)
