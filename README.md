@@ -5,6 +5,7 @@ It is still very WIP but currently its ALIVEEEEEEEE!
 
 I have also made a second, more silly version [here](/goofier/)!
 
+And I have implemented the cpu in verilog [here](https://github.com/marceldobehere/goofy-cpu-verilog)!
 
 
 ## Instruction Set
